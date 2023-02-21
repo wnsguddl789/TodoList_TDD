@@ -1,27 +1,27 @@
-import "@testing-library/jest-dom";
+import { describe, beforeEach, it, vitest } from "vitest";
 
 import TodoStore from "./TodoStore";
 import Todo from "../models/Todo";
 
 test("TodoStore", () => {
-	const cartStore = new TodoStore();
+	const todoStore = new TodoStore();
 
-	const handleChange = jest.fn();
+	const handleChange = vitest.fn();
 
-	cartStore.addListener(handleChange);
+	todoStore.addListener(handleChange);
 
-	cartStore.createTodo({ title: "testTodo title", content: "testTodo content" });
+	todoStore.createTodo({ title: "testTodo title", content: "testTodo content" });
 
 	expect(handleChange).toBeCalled();
 
-	expect(cartStore.getSnapShot()).toEqual({
-		list: [
+	expect(todoStore.getSnapShot()).toEqual({
+		todoList: [
 			new Todo({
-				id: 1,
-				title: "title",
-				content: "content",
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				id: expect.anything(),
+				title: "testTodo title",
+				content: "testTodo content",
+				createdAt: expect.anything(),
+				updatedAt: expect.anything(),
 				isFinished: false,
 			}),
 		],

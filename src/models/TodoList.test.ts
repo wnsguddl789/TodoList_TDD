@@ -1,6 +1,6 @@
-import "@testing-library/jest-dom";
+import { describe, beforeEach, it } from "vitest";
 
-import TodoList from "./TodoLis";
+import TodoList from "./TodoList";
 
 describe("TodoList", () => {
 	let todoList: TodoList;

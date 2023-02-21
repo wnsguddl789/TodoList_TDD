@@ -1,36 +1,33 @@
-import TodoList from "../models/TodoLis";
+import Store from "./Store";
 
-export default class TodoStore {
-	listeners = new Set<() => void>();
+import TodoList from "../models/TodoList";
+import Todo from "../models/Todo";
 
-	snapShot = {};
+export type TodoStoreSnapshot = {
+	todoList: Todo[];
+};
 
-	todoList = new TodoList();
+export default class TodoStore extends Store<TodoStoreSnapshot> {
+	private todoList = new TodoList();
 
-	addListener(listener: () => void) {
-		this.listeners.add(listener);
-	}
-
-	removerListener(listener: () => void) {
-		this.listeners.delete(listener);
-	}
-
-	getSnapShot() {
-		return this.snapShot;
-	}
-
-	publish() {
-		this.listeners.forEach((listener) => listener());
+	constructor() {
+		super();
+		this.takeSnapshot();
 	}
 
 	createTodo({ title, content }: { title: string; content: string }) {
 		this.todoList = this.todoList.createTodo({ title, content });
 
-		// 상태를 저장하고 변경을 알린다.
+		this.update();
+	}
+	takeSnapshot() {
 		this.snapShot = {
-			list: this.todoList.list,
+			todoList: this.todoList.list,
 		};
+	}
 
+	update() {
+		this.takeSnapshot();
 		this.publish();
 	}
 }
