@@ -11,6 +11,7 @@
 		"test": "vitest",
 		"test:watch": "vitest --watch",
 		"test:ui": "vitest --ui",
+		"test:coverage": "vitest --watch --coverage ",
 		"build": "tsc && vite build",
 		"preview": "vite preview"
 	},

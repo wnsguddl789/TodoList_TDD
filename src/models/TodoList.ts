@@ -1,8 +1,29 @@
 import Todo from "./Todo";
-import { v4 } from "uuid";
 
-interface CartType {
-	createTodo: ({ title, content }: { title: string; content: string }) => TodoList;
+export interface CreateTodoDto {
+	id: string;
+	input: {
+		title: string;
+		content: string;
+	};
+}
+
+export interface UpdateTodoDto {
+	id: string;
+	input: {
+		title: string;
+		content: string;
+	};
+}
+
+export interface DeleteTodoDto {
+	id: string;
+}
+
+interface TodoMethod {
+	createTodo: ({ id, input }: CreateTodoDto) => TodoList;
+	updateTodo: ({ id, input }: UpdateTodoDto) => TodoList;
+	deleteTodo: ({ id }: DeleteTodoDto) => TodoList;
 }
 
 export default class TodoList {
@@ -11,9 +32,12 @@ export default class TodoList {
 	constructor({ list = [] }: { list?: Todo[] } = {}) {
 		this.list = list;
 	}
-	createTodo: CartType["createTodo"] = ({ title, content }) => {
-		const todo = new Todo({
-			id: v4(),
+
+	private getTodoList = () => this.list;
+
+	private generateTodo = ({ id, input: { title, content } }: CreateTodoDto) =>
+		new Todo({
+			id,
 			title,
 			content,
 			createdAt: new Date(),
@@ -21,8 +45,24 @@ export default class TodoList {
 			isFinished: false,
 		});
 
+	public createTodo: TodoMethod["createTodo"] = ({ id, input }) => {
+		const todo = this.generateTodo({ id, input });
+
 		return new TodoList({
-			list: [...this.list, todo],
+			list: [...this.getTodoList(), todo],
+		});
+	};
+
+	public updateTodo: TodoMethod["updateTodo"] = ({ id, input }) => {
+		const todo = this.generateTodo({ id, input });
+		return new TodoList({
+			list: [...this.getTodoList().filter((todo) => todo.id !== id), todo],
+		});
+	};
+
+	public deleteTodo: TodoMethod["deleteTodo"] = ({ id }) => {
+		return new TodoList({
+			list: [...this.getTodoList().filter((todo) => todo.id !== id)],
 		});
 	};
 }

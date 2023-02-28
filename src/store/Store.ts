@@ -3,19 +3,19 @@ export default abstract class Store<Snapshot> {
 
 	protected snapShot = {} as Snapshot;
 
-	addListener(listener: () => void) {
+	public addListener(listener: () => void) {
 		this.listeners.add(listener);
 	}
 
-	removerListener(listener: () => void) {
+	public removerListener(listener: () => void) {
 		this.listeners.delete(listener);
 	}
 
-	getSnapShot() {
+	public getSnapShot() {
 		return this.snapShot;
 	}
 
-	publish() {
+	public publish() {
 		this.listeners.forEach((listener) => listener());
 	}
 }
