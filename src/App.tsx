@@ -1,21 +1,44 @@
-import { useState } from "react";
-import useTodoStore from "./hooks/useTodoStore";
+import { useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { toJS } from "mobx";
+import { observer, Provider as MobxStoreProvider } from "mobx-react";
 
-const App = () => {
+import RootStore from "./store/RootStore";
+import TodoStore from "./store/TodoStore";
+
+const stores = { todoStore: new TodoStore() };
+
+const App = observer(() => {
 	const [input, setInput] = useState({
 		title: "",
 		content: "",
 	});
-	const [snapshot, todoStore] = useTodoStore();
-	const { todoList } = snapshot;
+	const rootStore = useMemo(() => RootStore.createRootStoreInstance(stores), []);
 
-	const onClickCreateTodoButton = () => todoStore.createTodo({ id: uuidv4(), input });
-	const onClickUpdateTodoButton = (id: string) => todoStore.updateTodo({ id, input });
-	const onClickDeleteTodoButton = (id: string) => todoStore.deleteTodo({ id });
+	const { todoStore } = rootStore.getStores();
+	const todoList = toJS(todoStore.todoList);
+
+	const onClickCreateTodoButton = () => {
+		const todo = {
+			id: uuidv4(),
+			...input,
+			createdAt: new Date(),
+			updatedAt: new Date(),
+			isFinished: false,
+		};
+		todoStore.addTodoList(todo);
+	};
+
+	const onClickUpdateTodoButton = (id: string) => {
+		todoStore.updateTodoList(id);
+	};
+
+	const onClickDeleteTodoButton = (id: string) => {
+		todoStore.deleteTodo(id);
+	};
 
 	return (
-		<div>
+		<MobxStoreProvider {...rootStore.getStores()}>
 			<h1>메인페이지</h1>
 			<input
 				name="title"
@@ -34,8 +57,8 @@ const App = () => {
 					<button onClick={() => onClickDeleteTodoButton(todo.id)}>삭제</button>
 				</div>
 			))}
-		</div>
+		</MobxStoreProvider>
 	);
-};
+});
 
 export default App;

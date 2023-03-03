@@ -1896,6 +1896,23 @@ minimatch@^3.0.4, minimatch@^3.1.1:
   dependencies:
     brace-expansion "^1.1.7"
 
+mobx-react-lite@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-3.4.0.tgz#d59156a96889cdadad751e5e4dab95f28926dfff"
+  integrity sha512-bRuZp3C0itgLKHu/VNxi66DN/XVkQG7xtoBVWxpvC5FhAqbOCP21+nPhULjnzEqd7xBMybp6KwytdUpZKEgpIQ==
+
+mobx-react@^7.6.0:
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-7.6.0.tgz#ebf0456728a9bd2e5c24fdcf9b36e285a222a7d6"
+  integrity sha512-+HQUNuh7AoQ9ZnU6c4rvbiVVl+wEkb9WqYsVDzGLng+Dqj1XntHu79PvEWKtSMoMj67vFp/ZPXcElosuJO8ckA==
+  dependencies:
+    mobx-react-lite "^3.4.0"
+
+mobx@^6.8.0:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.8.0.tgz#59051755fdb5c8a9f3f2e0a9b6abaf86bab7f843"
+  integrity sha512-+o/DrHa4zykFMSKfS8Z+CPSEg5LW9tSNGTuN8o6MF1GKxlfkSHSeJn5UtgxvPkGgaouplnrLXCF+duAsmm6FHQ==
+
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"

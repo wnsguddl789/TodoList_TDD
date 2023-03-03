@@ -1,48 +1,16 @@
-import Store from "./Store";
-
-import TodoList from "../models/TodoList";
+import RootStore from "./RootStore";
+import { makeObservable, observable } from "mobx";
 import Todo from "../models/Todo";
 
-import type { CreateTodoDto, UpdateTodoDto, DeleteTodoDto } from "../models/TodoList";
+export default class TodoStore {
+	readonly todoList = observable<Todo>([]);
+	constructor() {}
 
-export type TodoStoreSnapshot = {
-	todoList: Todo[];
-};
+	public addTodoList = (todo: Todo) => {
+		this.todoList.push(todo);
+	};
 
-export default class TodoStore extends Store<TodoStoreSnapshot> {
-	private todoList = new TodoList();
+	public updateTodoList = (id: Todo["id"]) => {};
 
-	constructor() {
-		super();
-		this.takeSnapshot();
-	}
-
-	createTodo({ id, input }: CreateTodoDto) {
-		this.todoList = this.todoList.createTodo({ id, input });
-
-		this.update();
-	}
-
-	updateTodo({ id, input }: UpdateTodoDto) {
-		this.todoList = this.todoList.updateTodo({ id, input });
-
-		this.update();
-	}
-
-	deleteTodo({ id }: DeleteTodoDto) {
-		this.todoList = this.todoList.deleteTodo({ id });
-
-		this.update();
-	}
-
-	takeSnapshot() {
-		this.snapShot = {
-			todoList: this.todoList.list,
-		};
-	}
-
-	update() {
-		this.takeSnapshot();
-		this.publish();
-	}
+	public deleteTodo = (id: Todo["id"]) => {};
 }
